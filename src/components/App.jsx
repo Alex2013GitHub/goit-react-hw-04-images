@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { Searchbar } from './Searchbar/Searchbar';
 import { getImages } from '../services/api';
 import { errorInfo, notifyInputQuerry, success } from './ErrorInfo/ErrorInfo';
@@ -13,15 +13,6 @@ export const App = () => {
   const [images, setImages] = useState([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
-  const prevQuery = useRef(query);
-  const prevPage = useRef(page);
-
-  // state = {
-  //   query: '',
-  //   images: [],
-  //   page: 1,
-  //   loading: false,
-  // };
 
   const changeQuery = newQuery => {
     setQuery(`${Date.now()}/${newQuery}`);
@@ -29,16 +20,10 @@ export const App = () => {
     setPage(1);
   };
 
-  // componentDidUpdate = async (prevProps, prevState) => {
-  //   const { query, page } = this.state;
-
-  //   if (prevState.query !== query || prevState.page !== page) {
-  //     this.loadResult();
-  //   }
-  // };
-
   useEffect(() => {
     const loadResult = async () => {
+      if (!query) return;
+
       try {
         setLoading(true);
         const img = await getImages(query, page);
@@ -57,11 +42,7 @@ export const App = () => {
       }
     };
 
-    if (prevQuery.current !== query || prevPage.current !== page) {
-      loadResult();
-      prevQuery.current = query;
-      prevPage.current = page;
-    }
+    loadResult();
   }, [query, page]);
 
   const handleSubmit = evt => {
@@ -77,13 +58,8 @@ export const App = () => {
 
   const handleLoadMore = () => {
     setPage(prevPage => prevPage + 1);
-    // this.setState(prevState => ({
-    //   page: prevState.page + 1,
-    // }));
   };
 
-  // rende
-  //   const { loading, images } = this.state;
   return (
     <Container>
       <Searchbar onSubmit={handleSubmit} />

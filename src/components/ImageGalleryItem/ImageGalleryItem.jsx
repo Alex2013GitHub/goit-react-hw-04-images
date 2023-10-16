@@ -26,8 +26,8 @@ Modal.setAppElement('#root');
 export const GalleryImage = ({ item }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const openModal = () => setIsModalOpen({ isModalOpen: true });
-  const closeModal = () => setIsModalOpen({ isModalOpen: false });
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
 
   const { webformatURL, tags, largeImageURL } = item;
   return (
